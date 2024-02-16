@@ -1,4 +1,5 @@
-import "./styles.css";
+import { useState } from "react";
+import "./index.css";
 
 export default function App() {
   return (
@@ -34,4 +35,35 @@ export default function App() {
   );
 }
 
-function TextExpander() {}
+function TextExpander({
+  collapsedNumWords = 10,
+  collapseButtonText = "Show Less",
+  buttonColor="#1f09cd",
+  expandButtonText = "Show More",
+  expanded = false,
+  className,
+  children,
+}) {
+  const [expand, setExpand] = useState(expanded);
+  const displayedText = expand
+    ? children
+    : children.split(" ").slice(0, collapsedNumWords).join(" ") + "...";
+
+  const buttonStyle = {
+    background: "none",
+    border: "none",
+    font: "inherit",
+    cursor: "pointer",
+    marginLeft: "6px",
+    color: buttonColor,
+  };
+
+  return (
+    <div className={className}>
+      <span>{displayedText}</span>
+      <button onClick={() => setExpand((exp) => !exp)} style={buttonStyle}>
+        <strong>{expand ? collapseButtonText : expandButtonText}</strong>
+      </button>
+    </div>
+  );
+}
